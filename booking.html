@@ -187,28 +187,22 @@ e.preventDefault();
 button.disabled = true;
 overlay.style.display = "flex";
 
-const data = {
+const formData = new FormData();
 
-sessionType: document.getElementById("sessionType").value,
-classID: document.getElementById("classID").value,
-bookingDate: document.getElementById("bookingDate").value,
-bookingTime: document.getElementById("bookingTime").value,
-adults: document.getElementById("adults").value,
-children: document.getElementById("children").value,
-email: document.getElementById("email").value,
-phone: document.getElementById("phone").value,
-name: document.getElementById("name").value,
-nationality: document.getElementById("nationality").value
-
-};
+formData.append("sessionType", document.getElementById("sessionType").value);
+formData.append("classID", document.getElementById("classID").value);
+formData.append("bookingDate", document.getElementById("bookingDate").value);
+formData.append("bookingTime", document.getElementById("bookingTime").value);
+formData.append("adults", document.getElementById("adults").value);
+formData.append("children", document.getElementById("children").value);
+formData.append("email", document.getElementById("email").value);
+formData.append("phone", document.getElementById("phone").value);
+formData.append("name", document.getElementById("name").value);
+formData.append("nationality", document.getElementById("nationality").value);
 
 fetch(scriptURL,{
 method:"POST",
-mode:"no-cors",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(data)
+body: formData
 })
 .then(()=>{
 
@@ -220,7 +214,7 @@ alert("Booking submitted successfully");
 form.reset();
 
 })
-.catch(err=>{
+.catch(()=>{
 
 overlay.style.display="none";
 button.disabled=false;
@@ -230,7 +224,7 @@ alert("Error submitting booking");
 });
 
 });
-
+  
 </script>
 
 </body>
