@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>Cooking Class Booking</title>
 
 <style>
 
 body{
-font-family: Arial;
+font-family:Arial;
 background:#f5f5f5;
 padding:40px;
 }
@@ -56,19 +57,52 @@ button:hover{
 background:#333;
 }
 
+#message{
+margin-top:15px;
+text-align:center;
+}
+
 .success{
 color:green;
-text-align:center;
-margin-top:15px;
 }
 
 .error{
 color:red;
-text-align:center;
-margin-top:15px;
+}
+
+#loadingOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+color:white;
+font-size:18px;
+z-index:9999;
+}
+
+.spinner{
+width:40px;
+height:40px;
+border:5px solid white;
+border-top:5px solid transparent;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:10px;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
 }
 
 </style>
+
 </head>
 
 <body>
@@ -109,7 +143,7 @@ margin-top:15px;
 <label>Nationality</label>
 <input type="text" id="nationality">
 
-<button type="submit">Book Now</button>
+<button id="submitBtn" type="submit">Book Now</button>
 
 </form>
 
@@ -117,13 +151,29 @@ margin-top:15px;
 
 </div>
 
+<div id="loadingOverlay">
+<div class="spinner"></div>
+<p>Processing your booking...</p>
+</div>
+
 <script>
 
-const scriptURL = "YOUR_SCRIPT_URL";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJP7CXLpHtiYnA763w1mS019JZE_yutidiISJpSEdp/exec";
 
-document.getElementById("bookingForm").addEventListener("submit", function(e){
+const form = document.getElementById("bookingForm");
+const overlay = document.getElementById("loadingOverlay");
+const button = document.getElementById("submitBtn");
+const message = document.getElementById("message");
+
+form.addEventListener("submit", function(e){
 
 e.preventDefault();
+
+// prevent multiple clicks
+button.disabled = true;
+
+// show overlay
+overlay.style.display = "flex";
 
 const data = {
 
@@ -149,27 +199,33 @@ headers:{
 body: JSON.stringify(data)
 
 })
-.then(res=>res.json())
-.then(response=>{
+.then(res => res.json())
+.then(response => {
 
-if(response.result==="success"){
+overlay.style.display = "none";
+button.disabled = false;
 
-document.getElementById("message").innerHTML =
-"<p class='success'>Booking submitted successfully</p>";
+if(response.result === "success"){
 
-document.getElementById("bookingForm").reset();
+message.innerHTML =
+"<p class='success'>Booking submitted successfully!</p>";
+
+form.reset();
 
 }else{
 
-document.getElementById("message").innerHTML =
+message.innerHTML =
 "<p class='error'>Booking failed</p>";
 
 }
 
 })
-.catch(error=>{
+.catch(error => {
 
-document.getElementById("message").innerHTML =
+overlay.style.display = "none";
+button.disabled = false;
+
+message.innerHTML =
 "<p class='error'>Error submitting booking</p>";
 
 console.error(error);
