@@ -1,30 +1,26 @@
-// ==========================
-// CONFIG
-// ==========================
-
 const API = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJP7CXLpHtiYnA763w1mS019JZE_yutidiISJpSEdp/exec";
 
+let classesData = [];
 
-// ==========================
-// DATE FORMAT FUNCTION 
-// ==========================
+/* =========================
+DATE FORMAT
+========================= */
 
 function formatDate(dateString){
 
 const d = new Date(dateString);
 
 return d.toLocaleDateString("en-GB",{
-day: "numeric",
-month: "short",
-year: "numeric"
+day:"numeric",
+month:"short",
+year:"numeric"
 });
 
 }
 
-
-// ==========================
-// LOAD CLASSES
-// ==========================
+/* =========================
+LOAD CLASSES
+========================= */
 
 function loadClasses(){
 
@@ -32,11 +28,30 @@ fetch(API)
 .then(res => res.json())
 .then(data => {
 
+classesData = data;
+
+renderClasses(data);
+
+})
+.catch(err => {
+
+console.error(err);
+
+});
+
+}
+
+/* =========================
+RENDER CLASSES
+========================= */
+
+function renderClasses(data){
+
 const container = document.getElementById("classList");
 
 container.innerHTML = "";
 
-if(!data || data.length === 0){
+if(data.length === 0){
 
 container.innerHTML = "<p>No classes available.</p>";
 return;
@@ -69,7 +84,7 @@ ${cls.description}
 </p>
 
 <p class="price">
-${cls.price} THB
+💰 ${cls.price} THB
 </p>
 
 <button onclick="book('${cls.id}','${cls.date}','${cls.time}')">
@@ -80,8 +95,6 @@ Book Now
 
 `;
 
-
-// Accordion behavior
 card.querySelector(".class-header").onclick = () => {
 
 const detail = card.querySelector(".class-detail");
@@ -97,22 +110,44 @@ container.appendChild(card);
 
 });
 
-})
-.catch(err => {
+}
 
-console.error("Error loading classes", err);
+/* =========================
+DATE FILTER
+========================= */
 
-document.getElementById("classList").innerHTML =
-"<p>Unable to load classes.</p>";
+document.addEventListener("DOMContentLoaded", () => {
 
-});
+loadClasses();
+
+document.getElementById("dateFilter").addEventListener("change", function(){
+
+const selectedDate = this.value;
+
+if(!selectedDate){
+
+renderClasses(classesData);
+return;
 
 }
 
+const filtered = classesData.filter(cls => {
 
-// ==========================
-// BOOKING FUNCTION
-// ==========================
+const d = new Date(cls.date).toISOString().split("T")[0];
+
+return d === selectedDate;
+
+});
+
+renderClasses(filtered);
+
+});
+
+});
+
+/* =========================
+BOOKING
+========================= */
 
 function book(id,date,time){
 
@@ -125,19 +160,13 @@ if(!email) return;
 const phone = prompt("Enter your phone number") || "";
 
 const adult = prompt("Number of adults") || 0;
-
 const child = prompt("Number of children") || 0;
 
 const total = Number(adult) + Number(child);
 
-if(total === 0){
-
-alert("Please enter number of participants");
-return;
-
-}
-
-const bookingData = {
+fetch(API,{
+method:"POST",
+body:JSON.stringify({
 
 classid:id,
 date:date,
@@ -149,31 +178,18 @@ adult:adult,
 child:child,
 totalpax:total
 
-};
-
-fetch(API,{
-method:"POST",
-body:JSON.stringify(bookingData)
+})
 })
 .then(res => res.text())
 .then(() => {
 
-alert("✅ Booking submitted successfully!");
+alert("Booking submitted successfully!");
 
 })
 .catch(err => {
 
-console.error(err);
-
-alert("❌ Booking failed");
+alert("Booking failed");
 
 });
 
 }
-
-
-// ==========================
-// INITIAL LOAD
-// ==========================
-
-document.addEventListener("DOMContentLoaded", loadClasses);
