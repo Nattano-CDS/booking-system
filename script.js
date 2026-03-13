@@ -6,7 +6,7 @@ const API = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJ
 
 
 // ==========================
-// DATE FORMAT FUNCTION
+// DATE FORMAT FUNCTION 
 // ==========================
 
 function formatDate(dateString){
