@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Cooking Class Booking</title>
+<title>Booking</title>
 
 <style>
 
@@ -27,13 +27,20 @@ text-align:center;
 margin-bottom:20px;
 }
 
+.info{
+background:#f0f0f0;
+padding:12px;
+border-radius:6px;
+margin-bottom:15px;
+}
+
 label{
 display:block;
-margin-top:15px;
+margin-top:12px;
 font-weight:bold;
 }
 
-input,select{
+input{
 width:100%;
 padding:10px;
 margin-top:5px;
@@ -45,29 +52,11 @@ button{
 margin-top:20px;
 width:100%;
 padding:12px;
-background:#000;
+background:black;
 color:white;
 border:none;
 border-radius:5px;
 cursor:pointer;
-font-size:16px;
-}
-
-button:hover{
-background:#333;
-}
-
-#message{
-margin-top:15px;
-text-align:center;
-}
-
-.success{
-color:green;
-}
-
-.error{
-color:red;
 }
 
 #loadingOverlay{
@@ -80,25 +69,9 @@ background:rgba(0,0,0,0.6);
 display:none;
 align-items:center;
 justify-content:center;
-flex-direction:column;
 color:white;
 font-size:18px;
 z-index:9999;
-}
-
-.spinner{
-width:40px;
-height:40px;
-border:5px solid white;
-border-top:5px solid transparent;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin-bottom:10px;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg);}
-100%{transform:rotate(360deg);}
 }
 
 </style>
@@ -109,21 +82,19 @@ margin-bottom:10px;
 
 <div class="container">
 
-<h2>Book Cooking Class</h2>
+<h2>Confirm Your Booking</h2>
+
+<div class="info">
+<strong>Date:</strong> <span id="displayDate"></span><br>
+<strong>Time:</strong> <span id="displayTime"></span>
+</div>
 
 <form id="bookingForm">
 
-<input type="hidden" id="sessionType" value="CLS001">
-<input type="hidden" id="classID" value="CLS001">
-
-<label>Booking Date</label>
-<input type="date" id="bookingDate" required>
-
-<label>Booking Time</label>
-<select id="bookingTime">
-<option value="10:30 - 13:00">10:30 - 13:00</option>
-<option value="14:00 - 16:30">14:00 - 16:30</option>
-</select>
+<input type="hidden" id="sessionType">
+<input type="hidden" id="classID">
+<input type="hidden" id="bookingDate">
+<input type="hidden" id="bookingTime">
 
 <label>Adults</label>
 <input type="number" id="adults" value="1" min="1">
@@ -143,36 +114,49 @@ margin-bottom:10px;
 <label>Nationality</label>
 <input type="text" id="nationality">
 
-<button id="submitBtn" type="submit">Book Now</button>
+<button id="submitBtn">Confirm Booking</button>
 
 </form>
 
-<div id="message"></div>
-
 </div>
 
-<div id="loadingOverlay">
-<div class="spinner"></div>
-<p>Processing your booking...</p>
-</div>
+<div id="loadingOverlay">Processing booking...</div>
 
 <script>
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJP7CXLpHtiYnA763w1mS019JZE_yutidiISJpSEdp/exec";
+const scriptURL = "YOUR_SCRIPT_URL";
+
+/* GET URL PARAMETERS */
+
+const params = new URLSearchParams(window.location.search);
+
+const classID = params.get("classID");
+const date = params.get("date");
+const time = params.get("time");
+
+/* DISPLAY SELECTED SLOT */
+
+document.getElementById("displayDate").innerText = date;
+document.getElementById("displayTime").innerText = time;
+
+/* SET HIDDEN INPUTS */
+
+document.getElementById("classID").value = classID;
+document.getElementById("sessionType").value = classID;
+document.getElementById("bookingDate").value = date;
+document.getElementById("bookingTime").value = time;
+
+/* FORM SUBMIT */
 
 const form = document.getElementById("bookingForm");
 const overlay = document.getElementById("loadingOverlay");
 const button = document.getElementById("submitBtn");
-const message = document.getElementById("message");
 
 form.addEventListener("submit", function(e){
 
 e.preventDefault();
 
-// prevent multiple clicks
 button.disabled = true;
-
-// show overlay
 overlay.style.display = "flex";
 
 const data = {
@@ -190,45 +174,38 @@ nationality: document.getElementById("nationality").value
 
 };
 
-fetch(scriptURL, {
-
+fetch(scriptURL,{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
 },
-body: JSON.stringify(data)
-
+body:JSON.stringify(data)
 })
-.then(res => res.json())
-.then(response => {
+.then(res=>res.json())
+.then(res=>{
 
-overlay.style.display = "none";
-button.disabled = false;
+overlay.style.display="none";
+button.disabled=false;
 
-if(response.result === "success"){
+if(res.result==="success"){
 
-message.innerHTML =
-"<p class='success'>Booking submitted successfully!</p>";
+alert("Booking successful!");
 
-form.reset();
+window.location.href="thankyou.html";
 
 }else{
 
-message.innerHTML =
-"<p class='error'>Booking failed</p>";
+alert("Booking failed");
 
 }
 
 })
-.catch(error => {
+.catch(err=>{
 
-overlay.style.display = "none";
-button.disabled = false;
+overlay.style.display="none";
+button.disabled=false;
 
-message.innerHTML =
-"<p class='error'>Error submitting booking</p>";
-
-console.error(error);
+alert("Error submitting booking");
 
 });
 
