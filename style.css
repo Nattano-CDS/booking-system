@@ -1,38 +1,69 @@
+/* =========================
+GLOBAL STYLE
+========================= */
+
 body{
-font-family: 'Segoe UI', sans-serif;
-background:#f7f7f7;
+
+font-family: 'Segoe UI', Arial, sans-serif;
+background:#f5f6f8;
 margin:0;
 padding:40px;
+
 }
 
 .container{
+
 max-width:900px;
 margin:auto;
+
 }
 
 h1{
-font-size:32px;
+
+font-size:34px;
 margin-bottom:30px;
+font-weight:600;
+
 }
+
+/* =========================
+CLASS LIST
+========================= */
+
+.class-list{
+
+display:flex;
+flex-direction:column;
+gap:20px;
+
+}
+
+/* =========================
+CLASS CARD
+========================= */
 
 .class-card{
 
 background:white;
-border-radius:14px;
-padding:25px;
-margin-bottom:20px;
+border-radius:16px;
+padding:24px;
 
-box-shadow:0 8px 20px rgba(0,0,0,0.08);
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+
 transition:all .25s ease;
 
 }
 
 .class-card:hover{
 
-transform:translateY(-3px);
-box-shadow:0 12px 30px rgba(0,0,0,0.12);
+transform:translateY(-4px);
+box-shadow:0 15px 35px rgba(0,0,0,0.12);
 
 }
+
+/* =========================
+HEADER
+========================= */
 
 .class-header{
 
@@ -52,17 +83,23 @@ font-weight:600;
 
 .class-date{
 
-color:#777;
 font-size:14px;
+color:#666;
+text-align:right;
 
 }
+
+/* =========================
+DETAIL SECTION
+========================= */
 
 .class-detail{
 
 display:none;
-margin-top:15px;
+margin-top:18px;
+
 border-top:1px solid #eee;
-padding-top:15px;
+padding-top:18px;
 
 }
 
@@ -70,6 +107,7 @@ padding-top:15px;
 
 color:#555;
 margin-bottom:10px;
+line-height:1.5;
 
 }
 
@@ -80,21 +118,70 @@ margin-bottom:15px;
 
 }
 
+/* =========================
+BUTTON
+========================= */
+
 button{
 
 background:#111;
 color:white;
 border:none;
+
 padding:12px 22px;
+
 border-radius:8px;
+
+font-size:14px;
 font-weight:500;
+
 cursor:pointer;
-transition:all .2s;
+
+transition:all .2s ease;
 
 }
 
 button:hover{
 
 background:#333;
+
+}
+
+/* =========================
+LOADING STATE
+========================= */
+
+.loading{
+
+color:#777;
+font-size:16px;
+
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media (max-width:600px){
+
+body{
+
+padding:20px;
+
+}
+
+.class-header{
+
+flex-direction:column;
+align-items:flex-start;
+gap:5px;
+
+}
+
+.class-date{
+
+text-align:left;
+
+}
 
 }
