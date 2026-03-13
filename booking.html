@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>Book Your Class</title>
 
 <style>
 
 body{
-font-family:Arial;
+font-family: Arial;
 background:#f2f2f2;
 padding:40px;
 }
 
 .container{
-max-width:700px;
+max-width:750px;
 margin:auto;
 background:white;
 padding:40px;
@@ -22,35 +23,37 @@ box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
 h1{
-margin-bottom:30px;
+margin-bottom:25px;
+}
+
+label{
+font-size:14px;
+margin-bottom:6px;
 }
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:20px;
+margin-top:20px;
 }
 
-.full{
-grid-column:1 / -1;
-}
-
-label{
-font-size:14px;
-display:block;
-margin-bottom:6px;
+.field{
+display:flex;
+flex-direction:column;
 }
 
 input,select{
-width:100%;
 padding:12px;
 border:1px solid #ddd;
 border-radius:8px;
+width:100%;
+box-sizing:border-box;
 }
 
 button{
 width:100%;
-padding:15px;
+padding:16px;
 margin-top:30px;
 background:black;
 color:white;
@@ -62,6 +65,7 @@ cursor:pointer;
 
 button:disabled{
 background:#999;
+cursor:not-allowed;
 }
 
 #overlay{
@@ -77,6 +81,16 @@ justify-content:center;
 color:white;
 font-size:20px;
 z-index:9999;
+}
+
+/* Mobile */
+
+@media (max-width:600px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
 }
 
 </style>
@@ -95,7 +109,7 @@ z-index:9999;
 <input type="hidden" id="bookingDate">
 <input type="hidden" id="bookingTime">
 
-<div class="full">
+<div class="field">
 
 <label>Session Type</label>
 
@@ -140,8 +154,6 @@ z-index:9999;
 
 </div>
 
-</div>
-
 <button id="submitBtn">Submit Booking</button>
 
 </form>
@@ -152,21 +164,17 @@ z-index:9999;
 
 <script>
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJP7CXLpHtiYnA763w1mS019JZE_yutidiISJpSEdp/exec";
+const scriptURL = "YOUR_SCRIPT_URL";
 
-/* RECEIVE SLOT FROM index.html */
+/* Get parameters from index.html */
 
 const params = new URLSearchParams(window.location.search);
 
-const classID = params.get("classID");
-const date = params.get("date");
-const time = params.get("time");
+document.getElementById("classID").value = params.get("classID");
+document.getElementById("bookingDate").value = params.get("date");
+document.getElementById("bookingTime").value = params.get("time");
 
-document.getElementById("classID").value = classID;
-document.getElementById("bookingDate").value = date;
-document.getElementById("bookingTime").value = time;
-
-/* SUBMIT FORM */
+/* Submit booking */
 
 const form = document.getElementById("bookingForm");
 const overlay = document.getElementById("overlay");
@@ -190,7 +198,7 @@ children: document.getElementById("children").value,
 email: document.getElementById("email").value,
 phone: document.getElementById("phone").value,
 name: document.getElementById("name").value,
-nationality: ""
+nationality: document.getElementById("nationality").value
 
 };
 
@@ -234,4 +242,5 @@ alert("Error submitting booking");
 </script>
 
 </body>
+
 </html>
