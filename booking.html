@@ -204,28 +204,20 @@ nationality: document.getElementById("nationality").value
 
 fetch(scriptURL,{
 method:"POST",
+mode:"no-cors",
 headers:{
 "Content-Type":"application/json"
 },
 body:JSON.stringify(data)
 })
-.then(res=>res.json())
-.then(res=>{
+.then(()=>{
 
 overlay.style.display="none";
 button.disabled=false;
 
-if(res.result==="success"){
-
 alert("Booking submitted successfully");
 
 form.reset();
-
-}else{
-
-alert("Booking failed");
-
-}
 
 })
 .catch(err=>{
