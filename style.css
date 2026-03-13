@@ -1,6 +1,8 @@
 body{
-font-family: Arial;
-background:#f6f6f6;
+font-family: 'Segoe UI', sans-serif;
+background:#f7f7f7;
+margin:0;
+padding:40px;
 }
 
 .container{
@@ -8,13 +10,27 @@ max-width:900px;
 margin:auto;
 }
 
+h1{
+font-size:32px;
+margin-bottom:30px;
+}
+
 .class-card{
 
 background:white;
-border-radius:10px;
-padding:20px;
-margin-bottom:15px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
+border-radius:14px;
+padding:25px;
+margin-bottom:20px;
+
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+transition:all .25s ease;
+
+}
+
+.class-card:hover{
+
+transform:translateY(-3px);
+box-shadow:0 12px 30px rgba(0,0,0,0.12);
 
 }
 
@@ -22,24 +38,63 @@ box-shadow:0 3px 10px rgba(0,0,0,0.1);
 
 display:flex;
 justify-content:space-between;
+align-items:center;
 cursor:pointer;
+
+}
+
+.class-title{
+
+font-size:20px;
+font-weight:600;
+
+}
+
+.class-date{
+
+color:#777;
+font-size:14px;
 
 }
 
 .class-detail{
 
 display:none;
-margin-top:10px;
+margin-top:15px;
+border-top:1px solid #eee;
+padding-top:15px;
+
+}
+
+.class-desc{
+
+color:#555;
+margin-bottom:10px;
+
+}
+
+.price{
+
+font-weight:600;
+margin-bottom:15px;
 
 }
 
 button{
 
-background:#000;
+background:#111;
 color:white;
 border:none;
-padding:10px 20px;
-border-radius:6px;
+padding:12px 22px;
+border-radius:8px;
+font-weight:500;
 cursor:pointer;
+transition:all .2s;
+
+}
+
+button:hover{
+
+background:#333;
 
 }
