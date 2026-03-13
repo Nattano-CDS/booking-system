@@ -14,11 +14,13 @@
 
 <body>
 
-<div class="booking-container">
+<div class="booking-wrapper">
+
+<div class="booking-card">
 
 <h1>Book Your Class</h1>
 
-<form id="bookingForm" class="booking-form">
+<form id="bookingForm">
 
 <input type="hidden" id="classid">
 <input type="hidden" id="date">
@@ -32,7 +34,7 @@
 </select>
 </div>
 
-<div class="form-row">
+<div class="form-grid">
 
 <div class="form-group">
 <label>Name</label>
@@ -44,18 +46,10 @@
 <input type="email" id="email" required>
 </div>
 
-</div>
-
-<div class="form-row">
-
 <div class="form-group">
 <label>Phone</label>
 <input type="text" id="phone">
 </div>
-
-</div>
-
-<div class="form-row">
 
 <div class="form-group">
 <label>Adults</label>
@@ -69,7 +63,7 @@
 
 </div>
 
-<button type="submit" class="booking-button">
+<button type="submit" class="submit-btn">
 Submit Booking
 </button>
 
@@ -77,8 +71,9 @@ Submit Booking
 
 </div>
 
+</div>
+
 <script src="booking.js"></script>
 
 </body>
-
 </html>
