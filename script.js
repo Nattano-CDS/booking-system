@@ -1,30 +1,30 @@
-// ==============================
+// ==========================
 // CONFIG
-// ==============================
+// ==========================
 
 const API = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJP7CXLpHtiYnA763w1mS019JZE_yutidiISJpSEdp/exec";
 
 
-// ==============================
-// DATE FORMATTER
-// ==============================
+// ==========================
+// DATE FORMAT FUNCTION
+// ==========================
 
 function formatDate(dateString){
 
 const d = new Date(dateString);
 
 return d.toLocaleDateString("en-GB",{
-day:"numeric",
-month:"short",
-year:"numeric"
+day: "numeric",
+month: "short",
+year: "numeric"
 });
 
 }
 
 
-// ==============================
-// LOAD CLASSES FROM API
-// ==============================
+// ==========================
+// LOAD CLASSES
+// ==========================
 
 function loadClasses(){
 
@@ -36,7 +36,7 @@ const container = document.getElementById("classList");
 
 container.innerHTML = "";
 
-if(data.length === 0){
+if(!data || data.length === 0){
 
 container.innerHTML = "<p>No classes available.</p>";
 return;
@@ -57,7 +57,7 @@ ${cls.name}
 </div>
 
 <div class="class-date">
-${formatDate(cls.date)} | ${cls.time}
+📅 ${formatDate(cls.date)} | ⏰ ${cls.time}
 </div>
 
 </div>
@@ -69,7 +69,7 @@ ${cls.description}
 </p>
 
 <p class="price">
-Price: ${cls.price} THB
+💰 ${cls.price} THB
 </p>
 
 <button onclick="book('${cls.id}','${cls.date}','${cls.time}')">
@@ -80,6 +80,8 @@ Book Now
 
 `;
 
+
+// Accordion behavior
 card.querySelector(".class-header").onclick = () => {
 
 const detail = card.querySelector(".class-detail");
@@ -108,9 +110,9 @@ document.getElementById("classList").innerHTML =
 }
 
 
-// ==============================
+// ==========================
 // BOOKING FUNCTION
-// ==============================
+// ==========================
 
 function book(id,date,time){
 
@@ -154,7 +156,7 @@ method:"POST",
 body:JSON.stringify(bookingData)
 })
 .then(res => res.text())
-.then(response => {
+.then(() => {
 
 alert("✅ Booking submitted successfully!");
 
@@ -170,8 +172,8 @@ alert("❌ Booking failed");
 }
 
 
-// ==============================
+// ==========================
 // INITIAL LOAD
-// ==============================
+// ==========================
 
 document.addEventListener("DOMContentLoaded", loadClasses);
