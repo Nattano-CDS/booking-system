@@ -1,6 +1,14 @@
+// ==============================
+// CONFIG
+// ==============================
+
 const API = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJP7CXLpHtiYnA763w1mS019JZE_yutidiISJpSEdp/exec";
 
-// Format date nicely
+
+// ==============================
+// DATE FORMATTER
+// ==============================
+
 function formatDate(dateString){
 
 const d = new Date(dateString);
@@ -13,13 +21,27 @@ year:"numeric"
 
 }
 
-// Load Classes
+
+// ==============================
+// LOAD CLASSES FROM API
+// ==============================
+
+function loadClasses(){
+
 fetch(API)
 .then(res => res.json())
 .then(data => {
 
 const container = document.getElementById("classList");
+
 container.innerHTML = "";
+
+if(data.length === 0){
+
+container.innerHTML = "<p>No classes available.</p>";
+return;
+
+}
 
 data.forEach(cls => {
 
@@ -27,22 +49,35 @@ const card = document.createElement("div");
 card.className = "class-card";
 
 card.innerHTML = `
+
 <div class="class-header">
-<h3>${cls.name}</h3>
-<span class="class-date">${formatDate(cls.date)} | ${cls.time}</span>
+
+<div class="class-title">
+${cls.name}
+</div>
+
+<div class="class-date">
+${formatDate(cls.date)} | ${cls.time}
+</div>
+
 </div>
 
 <div class="class-detail">
 
-<p>${cls.description}</p>
+<p class="class-desc">
+${cls.description}
+</p>
 
-<p><b>Price:</b> ${cls.price} THB</p>
+<p class="price">
+Price: ${cls.price} THB
+</p>
 
 <button onclick="book('${cls.id}','${cls.date}','${cls.time}')">
 Book Now
 </button>
 
 </div>
+
 `;
 
 card.querySelector(".class-header").onclick = () => {
@@ -50,7 +85,9 @@ card.querySelector(".class-header").onclick = () => {
 const detail = card.querySelector(".class-detail");
 
 detail.style.display =
-detail.style.display === "block" ? "none" : "block";
+detail.style.display === "block"
+? "none"
+: "block";
 
 };
 
@@ -63,26 +100,42 @@ container.appendChild(card);
 
 console.error("Error loading classes", err);
 
+document.getElementById("classList").innerHTML =
+"<p>Unable to load classes.</p>";
+
 });
 
+}
 
-// Booking Function
+
+// ==============================
+// BOOKING FUNCTION
+// ==============================
+
 function book(id,date,time){
 
 const name = prompt("Enter your name");
-const email = prompt("Email");
-const phone = prompt("Phone");
-const adult = prompt("Number of Adults");
-const child = prompt("Number of Children");
+if(!name) return;
 
-if(!name || !email){
-alert("Name and Email required");
+const email = prompt("Enter your email");
+if(!email) return;
+
+const phone = prompt("Enter your phone number") || "";
+
+const adult = prompt("Number of adults") || 0;
+
+const child = prompt("Number of children") || 0;
+
+const total = Number(adult) + Number(child);
+
+if(total === 0){
+
+alert("Please enter number of participants");
 return;
+
 }
 
-fetch(API,{
-method:"POST",
-body:JSON.stringify({
+const bookingData = {
 
 classid:id,
 date:date,
@@ -92,20 +145,33 @@ email:email,
 phone:phone,
 adult:adult,
 child:child,
-totalpax:Number(adult)+Number(child)
+totalpax:total
 
-})
+};
+
+fetch(API,{
+method:"POST",
+body:JSON.stringify(bookingData)
 })
 .then(res => res.text())
-.then(() => {
+.then(response => {
 
-alert("Booking submitted successfully!");
+alert("✅ Booking submitted successfully!");
 
 })
 .catch(err => {
 
-alert("Booking failed");
+console.error(err);
+
+alert("❌ Booking failed");
 
 });
 
 }
+
+
+// ==============================
+// INITIAL LOAD
+// ==============================
+
+document.addEventListener("DOMContentLoaded", loadClasses);
