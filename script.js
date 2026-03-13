@@ -1,10 +1,15 @@
+// =============================
+// API CONFIG
+// =============================
+
 const API = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJP7CXLpHtiYnA763w1mS019JZE_yutidiISJpSEdp/exec";
 
 let classesData = [];
 
-/* =========================
-DATE FORMAT
-========================= */
+
+// =============================
+// FORMAT DATE
+// =============================
 
 function formatDate(dateString){
 
@@ -18,9 +23,10 @@ year:"numeric"
 
 }
 
-/* =========================
-LOAD CLASSES
-========================= */
+
+// =============================
+// LOAD CLASSES FROM API
+// =============================
 
 function loadClasses(){
 
@@ -35,15 +41,16 @@ renderClasses(data);
 })
 .catch(err => {
 
-console.error(err);
+console.error("Error loading classes", err);
 
 });
 
 }
 
-/* =========================
-RENDER CLASSES
-========================= */
+
+// =============================
+// RENDER CLASS CARDS
+// =============================
 
 function renderClasses(data){
 
@@ -112,17 +119,12 @@ container.appendChild(card);
 
 }
 
-/* =========================
-DATE FILTER
-========================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+// =============================
+// DATE FILTER
+// =============================
 
-loadClasses();
-
-document.getElementById("dateFilter").addEventListener("change", function(){
-
-const selectedDate = this.value;
+function filterByDate(selectedDate){
 
 if(!selectedDate){
 
@@ -133,21 +135,26 @@ return;
 
 const filtered = classesData.filter(cls => {
 
-const d = new Date(cls.date).toISOString().split("T")[0];
+const classDate = new Date(cls.date);
 
-return d === selectedDate;
+const y = classDate.getFullYear();
+const m = String(classDate.getMonth()+1).padStart(2,'0');
+const d = String(classDate.getDate()).padStart(2,'0');
+
+const formatted = `${y}-${m}-${d}`;
+
+return formatted === selectedDate;
 
 });
 
 renderClasses(filtered);
 
-});
+}
 
-});
 
-/* =========================
-BOOKING
-========================= */
+// =============================
+// BOOKING FUNCTION
+// =============================
 
 function book(id,date,time){
 
@@ -163,6 +170,13 @@ const adult = prompt("Number of adults") || 0;
 const child = prompt("Number of children") || 0;
 
 const total = Number(adult) + Number(child);
+
+if(total === 0){
+
+alert("Please enter number of participants");
+return;
+
+}
 
 fetch(API,{
 method:"POST",
@@ -188,8 +202,29 @@ alert("Booking submitted successfully!");
 })
 .catch(err => {
 
+console.error(err);
+
 alert("Booking failed");
 
 });
 
 }
+
+
+// =============================
+// INITIAL LOAD
+// =============================
+
+document.addEventListener("DOMContentLoaded", () => {
+
+loadClasses();
+
+const dateInput = document.getElementById("dateFilter");
+
+dateInput.addEventListener("change", function(){
+
+filterByDate(this.value);
+
+});
+
+});
