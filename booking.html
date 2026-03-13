@@ -1,65 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
-<title>Booking</title>
+<title>Book Your Class</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#f5f5f5;
+background:#f2f2f2;
 padding:40px;
 }
 
 .container{
-max-width:500px;
+max-width:700px;
 margin:auto;
 background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
+padding:40px;
+border-radius:12px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
-h2{
-text-align:center;
-margin-bottom:20px;
+h1{
+margin-bottom:30px;
 }
 
-.info{
-background:#f0f0f0;
-padding:12px;
-border-radius:6px;
-margin-bottom:15px;
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.full{
+grid-column:1 / -1;
 }
 
 label{
+font-size:14px;
 display:block;
-margin-top:12px;
-font-weight:bold;
+margin-bottom:6px;
 }
 
-input{
+input,select{
 width:100%;
-padding:10px;
-margin-top:5px;
+padding:12px;
 border:1px solid #ddd;
-border-radius:5px;
+border-radius:8px;
 }
 
 button{
-margin-top:20px;
 width:100%;
-padding:12px;
+padding:15px;
+margin-top:30px;
 background:black;
 color:white;
 border:none;
-border-radius:5px;
+border-radius:10px;
+font-size:16px;
 cursor:pointer;
 }
 
-#loadingOverlay{
+button:disabled{
+background:#999;
+}
+
+#overlay{
 position:fixed;
 top:0;
 left:0;
@@ -70,7 +75,7 @@ display:none;
 align-items:center;
 justify-content:center;
 color:white;
-font-size:18px;
+font-size:20px;
 z-index:9999;
 }
 
@@ -82,51 +87,72 @@ z-index:9999;
 
 <div class="container">
 
-<h2>Confirm Your Booking</h2>
-
-<div class="info">
-<strong>Date:</strong> <span id="displayDate"></span><br>
-<strong>Time:</strong> <span id="displayTime"></span>
-</div>
+<h1>Book Your Class</h1>
 
 <form id="bookingForm">
 
-<input type="hidden" id="sessionType">
 <input type="hidden" id="classID">
 <input type="hidden" id="bookingDate">
 <input type="hidden" id="bookingTime">
 
-<label>Adults</label>
-<input type="number" id="adults" value="1" min="1">
+<div class="full">
 
-<label>Children</label>
-<input type="number" id="children" value="0" min="0">
+<label>Session Type</label>
 
+<select id="sessionType">
+<option value="CLS001">Joined Session</option>
+<option value="PRIVATE">Private Session</option>
+</select>
+
+</div>
+
+<div class="grid">
+
+<div>
 <label>Name</label>
 <input type="text" id="name" required>
+</div>
 
+<div>
+<label>Nationality</label>
+<input type="text" id="name" required>
+</div>
+  
+<div>
 <label>Email</label>
 <input type="email" id="email" required>
+</div>
 
+<div>
 <label>Phone</label>
 <input type="text" id="phone" required>
+</div>
 
-<label>Nationality</label>
-<input type="text" id="nationality">
+<div>
+<label>Adults</label>
+<input type="number" id="adults" value="1" min="1">
+</div>
 
-<button id="submitBtn">Confirm Booking</button>
+<div class="full">
+<label>Children</label>
+<input type="number" id="children" value="0" min="0">
+</div>
+
+</div>
+
+<button id="submitBtn">Submit Booking</button>
 
 </form>
 
 </div>
 
-<div id="loadingOverlay">Processing booking...</div>
+<div id="overlay">Processing booking...</div>
 
 <script>
 
-const scriptURL = "YOUR_SCRIPT_URL";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJP7CXLpHtiYnA763w1mS019JZE_yutidiISJpSEdp/exec";
 
-/* GET URL PARAMETERS */
+/* RECEIVE SLOT FROM index.html */
 
 const params = new URLSearchParams(window.location.search);
 
@@ -134,22 +160,14 @@ const classID = params.get("classID");
 const date = params.get("date");
 const time = params.get("time");
 
-/* DISPLAY SELECTED SLOT */
-
-document.getElementById("displayDate").innerText = date;
-document.getElementById("displayTime").innerText = time;
-
-/* SET HIDDEN INPUTS */
-
 document.getElementById("classID").value = classID;
-document.getElementById("sessionType").value = classID;
 document.getElementById("bookingDate").value = date;
 document.getElementById("bookingTime").value = time;
 
-/* FORM SUBMIT */
+/* SUBMIT FORM */
 
 const form = document.getElementById("bookingForm");
-const overlay = document.getElementById("loadingOverlay");
+const overlay = document.getElementById("overlay");
 const button = document.getElementById("submitBtn");
 
 form.addEventListener("submit", function(e){
@@ -170,7 +188,7 @@ children: document.getElementById("children").value,
 email: document.getElementById("email").value,
 phone: document.getElementById("phone").value,
 name: document.getElementById("name").value,
-nationality: document.getElementById("nationality").value
+nationality: ""
 
 };
 
@@ -189,9 +207,9 @@ button.disabled=false;
 
 if(res.result==="success"){
 
-alert("Booking successful!");
+alert("Booking submitted successfully");
 
-window.location.href="thankyou.html";
+form.reset();
 
 }else{
 
