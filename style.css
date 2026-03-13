@@ -3,7 +3,7 @@ GLOBAL
 ========================= */
 
 body{
-font-family:'Segoe UI', Arial, sans-serif;
+font-family: 'Segoe UI', Arial, sans-serif;
 background:#f5f6f8;
 margin:0;
 padding:40px;
@@ -16,7 +16,8 @@ margin:auto;
 
 h1{
 font-size:34px;
-margin-bottom:20px;
+margin-bottom:25px;
+font-weight:600;
 }
 
 /* =========================
@@ -116,6 +117,7 @@ padding-top:18px;
 
 color:#555;
 margin-bottom:10px;
+line-height:1.5;
 
 }
 
@@ -145,6 +147,8 @@ cursor:pointer;
 
 margin-top:15px;
 
+transition:all .2s;
+
 }
 
 button:hover{
@@ -164,58 +168,54 @@ color:#777;
 }
 
 /* =========================
-MOBILE
+BOOKING PAGE
 ========================= */
 
-@media(max-width:600px){
+.booking-wrapper{
 
-body{
-padding:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+
+padding:40px 20px;
+
 }
 
-.class-header{
-flex-direction:column;
-align-items:flex-start;
-gap:6px;
-}
-  /* =========================
-BOOKING FORM
-========================= */
+.booking-card{
 
-.booking-container{
-
+width:100%;
 max-width:600px;
-margin:60px auto;
 
 background:white;
 
 padding:35px;
 
-border-radius:14px;
+border-radius:16px;
 
-box-shadow:0 15px 40px rgba(0,0,0,0.08);
+box-shadow:0 20px 45px rgba(0,0,0,0.08);
 
 }
 
-.booking-container h1{
+.booking-card h1{
 
 margin-bottom:25px;
 font-size:28px;
 
 }
 
-.booking-form{
+/* =========================
+FORM GRID
+========================= */
 
-display:flex;
-flex-direction:column;
-gap:18px;
+.form-grid{
 
-}
+display:grid;
 
-.form-row{
+grid-template-columns:1fr 1fr;
 
-display:flex;
-gap:15px;
+gap:16px;
+
+margin-top:15px;
 
 }
 
@@ -223,7 +223,6 @@ gap:15px;
 
 display:flex;
 flex-direction:column;
-flex:1;
 
 }
 
@@ -237,9 +236,9 @@ color:#444;
 
 input, select{
 
-padding:10px;
+padding:11px 12px;
 
-border-radius:6px;
+border-radius:8px;
 
 border:1px solid #ddd;
 
@@ -254,20 +253,27 @@ border-color:#111;
 
 }
 
-.booking-button{
+/* =========================
+BOOKING BUTTON
+========================= */
 
-margin-top:10px;
+.submit-btn{
+
+margin-top:25px;
+
+width:100%;
 
 background:#111;
+
 color:white;
 
 border:none;
 
-padding:12px;
+padding:14px;
 
-border-radius:8px;
+border-radius:10px;
 
-font-size:15px;
+font-size:16px;
 
 cursor:pointer;
 
@@ -275,20 +281,30 @@ transition:all .2s;
 
 }
 
-.booking-button:hover{
+.submit-btn:hover{
 
 background:#333;
 
 }
 
+/* =========================
+MOBILE
+========================= */
+
 @media(max-width:600px){
 
-.form-row{
-
-flex-direction:column;
-
+body{
+padding:20px;
 }
 
+.class-header{
+flex-direction:column;
+align-items:flex-start;
+gap:6px;
+}
+
+.form-grid{
+grid-template-columns:1fr;
 }
 
 }
