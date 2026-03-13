@@ -69,7 +69,7 @@ ${cls.description}
 </p>
 
 <p class="price">
-💰 ${cls.price} THB
+${cls.price} THB
 </p>
 
 <button onclick="book('${cls.id}','${cls.date}','${cls.time}')">
