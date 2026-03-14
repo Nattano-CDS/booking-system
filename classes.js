@@ -1,5 +1,5 @@
 const CLASS_API =
-"https://script.google.com/macros/s/CLASS_API_ID/exec";
+"https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
 
 async function loadClasses() {
 
