@@ -1,54 +1,76 @@
-const CLASS_API ="https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
+const CLASS_API = "https://script.google.com/macros/s/YOUR_CLASS_SCRIPT_ID/exec";
 
+const datePicker = document.getElementById("classDate");
+
+datePicker.addEventListener("change", loadClasses);
 
 async function loadClasses() {
 
-  const container = document.getElementById("classList");
-  container.innerHTML = "Loading classes...";
+const selectedDate = datePicker.value;
 
-  try {
+const container = document.getElementById("classList");
 
-    const response = await fetch(CLASS_API);
-    const classes = await response.json();
+container.innerHTML = "Loading classes...";
 
-    container.innerHTML = "";
+try {
 
-    classes.forEach(cls => {
+const response = await fetch(CLASS_API);
+const classes = await response.json();
 
-      const card = document.createElement("div");
-      card.className = "class-card";
+container.innerHTML = "";
 
-      card.innerHTML = `
-        <h3>${cls.name}</h3>
+const filtered = classes.filter(cls => {
 
-        <p><b>Time:</b> ${cls.time}</p>
+const classDate = new Date(cls.date).toISOString().split("T")[0];
 
-        <p>${cls.description}</p>
+return classDate === selectedDate;
 
-        <p class="price">${cls.price} THB</p>
+});
 
-        <button onclick="goBooking('${cls.classID}')">
-          Book Now
-        </button>
-      `;
+if(filtered.length === 0){
 
-      container.appendChild(card);
+container.innerHTML = "No classes available on this date.";
 
-    });
-
-  } catch (error) {
-
-    console.error(error);
-    container.innerHTML = "Failed to load classes.";
-
-  }
+return;
 
 }
 
-function goBooking(classID) {
+filtered.forEach(cls => {
 
-  window.location.href = "booking.html?classID=" + classID;
+const card = document.createElement("div");
+card.className = "class-card";
+
+card.innerHTML = `
+<h3>${cls.name}</h3>
+
+<p><b>Time:</b> ${cls.time}</p>
+
+<p>${cls.description}</p>
+
+<p><b>Price:</b> ${cls.price} THB</p>
+
+<button onclick="goBooking('${cls.classID}','${selectedDate}','${cls.time}')">
+Book Now
+</button>
+`;
+
+container.appendChild(card);
+
+});
+
+}catch(error){
+
+console.error(error);
+
+container.innerHTML = "Failed to load classes.";
 
 }
 
-window.onload = loadClasses;
+}
+
+function goBooking(classID,date,time){
+
+window.location.href =
+`booking.html?classID=${classID}&date=${date}&time=${encodeURIComponent(time)}`;
+
+}
