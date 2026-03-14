@@ -1,4 +1,3 @@
-
 // =============================
 // API CONFIG
 // =============================
@@ -26,7 +25,7 @@ year:"numeric"
 
 
 // =============================
-// LOAD CLASSES FROM API
+// LOAD CLASSES
 // =============================
 
 function loadClasses(){
@@ -92,13 +91,10 @@ ${cls.description}
 </p>
 
 <p class="price">
-Join Session: ${cls.price} THB
-</p>
-<p class="price">
-Private Class:: ${cls.privatePrice} THB
+💰 ${cls.price} THB
 </p>
 
-<button onclick="book('${cls.id}','${cls.date}','${cls.time}')">
+<button onclick="goBooking('${cls.classID}','${cls.date}','${cls.time}')">
 Book Now
 </button>
 
@@ -157,60 +153,14 @@ renderClasses(filtered);
 
 
 // =============================
-// BOOKING FUNCTION
+// REDIRECT TO BOOKING PAGE
 // =============================
 
-function book(id,date,time){
+function goBooking(id,date,time){
 
-const name = prompt("Enter your name");
-if(!name) return;
+const url = `booking.html?classid=${id}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`;
 
-const email = prompt("Enter your email");
-if(!email) return;
-
-const phone = prompt("Enter your phone number") || "";
-
-const adult = prompt("Number of adults") || 0;
-const child = prompt("Number of children") || 0;
-
-const total = Number(adult) + Number(child);
-
-if(total === 0){
-
-alert("Please enter number of participants");
-return;
-
-}
-
-fetch(API,{
-method:"POST",
-body:JSON.stringify({
-
-classid:id,
-date:date,
-time:time,
-name:name,
-email:email,
-phone:phone,
-adult:adult,
-child:child,
-totalpax:total
-
-})
-})
-.then(res => res.text())
-.then(() => {
-
-alert("Booking submitted successfully!");
-
-})
-.catch(err => {
-
-console.error(err);
-
-alert("Booking failed");
-
-});
+window.location.href = url;
 
 }
 
