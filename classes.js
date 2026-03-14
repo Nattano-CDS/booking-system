@@ -1,10 +1,10 @@
-const CLASS_API = "https://script.google.com/macros/s/YOUR_CLASS_SCRIPT_ID/exec";
+const CLASS_API = "YOUR_CLASS_API_URL";
 
 const datePicker = document.getElementById("classDate");
 
 datePicker.addEventListener("change", loadClasses);
 
-async function loadClasses() {
+async function loadClasses(){
 
 const selectedDate = datePicker.value;
 
@@ -12,7 +12,7 @@ const container = document.getElementById("classList");
 
 container.innerHTML = "Loading classes...";
 
-try {
+try{
 
 const response = await fetch(CLASS_API);
 const classes = await response.json();
@@ -21,7 +21,8 @@ container.innerHTML = "";
 
 const filtered = classes.filter(cls => {
 
-const classDate = new Date(cls.date).toISOString().split("T")[0];
+const classDate =
+new Date(cls.date).toISOString().split("T")[0];
 
 return classDate === selectedDate;
 
@@ -29,7 +30,7 @@ return classDate === selectedDate;
 
 if(filtered.length === 0){
 
-container.innerHTML = "No classes available on this date.";
+container.innerHTML = "No classes available.";
 
 return;
 
@@ -41,26 +42,28 @@ const card = document.createElement("div");
 card.className = "class-card";
 
 card.innerHTML = `
+
 <h3>${cls.name}</h3>
 
 <p><b>Time:</b> ${cls.time}</p>
 
 <p>${cls.description}</p>
 
-<p><b>Price:</b> ${cls.price} THB</p>
+<p class="price">${cls.price} THB</p>
 
 <button onclick="goBooking('${cls.classID}','${selectedDate}','${cls.time}')">
 Book Now
 </button>
+
 `;
 
 container.appendChild(card);
 
 });
 
-}catch(error){
+}catch(err){
 
-console.error(error);
+console.error(err);
 
 container.innerHTML = "Failed to load classes.";
 
