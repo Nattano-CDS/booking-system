@@ -1,47 +1,64 @@
-const CLASS_API =
-"https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
+const CLASS_API ="https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
+
 
 async function loadClasses() {
 
-const response = await fetch(CLASS_API);
-const classes = await response.json();
+  const container = document.getElementById("classList");
 
-const container = document.getElementById("classList");
-container.innerHTML = "";
+  container.innerHTML = "Loading classes...";
 
-classes.forEach(cls => {
+  try {
 
-const date = new Date(cls.date).toLocaleDateString("en-GB");
+    const response = await fetch(CLASS_API);
+    const classes = await response.json();
 
-const card = document.createElement("div");
-card.className = "class-card";
+    container.innerHTML = "";
 
-card.innerHTML = `
-<h3>${cls.name}</h3>
+    if (classes.length === 0) {
+      container.innerHTML = "<p>No classes available.</p>";
+      return;
+    }
 
-<p><b>Date:</b> ${date}</p>
+    classes.forEach(cls => {
 
-<p><b>Time:</b> ${cls.time}</p>
+      const date = new Date(cls.date).toLocaleDateString("en-GB");
 
-<p>${cls.description}</p>
+      const card = document.createElement("div");
+      card.className = "class-card";
 
-<p><b>Price:</b> ${cls.price} THB</p>
+      card.innerHTML = `
+        <h3>${cls.name}</h3>
 
-<button onclick="goBooking('${cls.classID}')">
-Book Now
-</button>
-`;
+        <p><b>Date:</b> ${date}</p>
 
-container.appendChild(card);
+        <p><b>Time:</b> ${cls.time}</p>
 
-});
+        <p>${cls.description}</p>
+
+        <p class="price">${cls.price} THB</p>
+
+        <button onclick="goBooking('${cls.classID}')">
+          Book Now
+        </button>
+      `;
+
+      container.appendChild(card);
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    container.innerHTML = "Failed to load classes.";
+
+  }
 
 }
 
-function goBooking(classID){
+function goBooking(classID) {
 
-window.location.href =
-"booking.html?classID=" + classID;
+  window.location.href = "booking.html?classID=" + classID;
 
 }
 
