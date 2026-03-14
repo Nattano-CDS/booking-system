@@ -1,79 +1,195 @@
-const CLASS_API = "https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
+const API = "https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
 
-const datePicker = document.getElementById("classDate");
+let classesData = [];
 
-datePicker.addEventListener("change", loadClasses);
+/* =========================
+DATE FORMAT
+========================= */
 
-async function loadClasses(){
+function formatDate(dateString){
 
-const selectedDate = datePicker.value;
+const d = new Date(dateString);
 
-const container = document.getElementById("classList");
+return d.toLocaleDateString("en-GB",{
+day:"numeric",
+month:"short",
+year:"numeric"
+});
 
-container.innerHTML = "Loading classes...";
+}
 
-try{
+/* =========================
+LOAD CLASSES
+========================= */
 
-const response = await fetch(CLASS_API);
-const classes = await response.json();
+function loadClasses(){
 
-container.innerHTML = "";
+fetch(API)
+.then(res => res.json())
+.then(data => {
 
-const filtered = classes.filter(cls => {
+classesData = data;
 
-const classDate =
-new Date(cls.date).toISOString().split("T")[0];
+renderClasses(data);
 
-return classDate === selectedDate;
+})
+.catch(err => {
+
+console.error(err);
 
 });
 
-if(filtered.length === 0){
+}
 
-container.innerHTML = "No classes available.";
+/* =========================
+RENDER CLASSES
+========================= */
 
+function renderClasses(data){
+
+const container = document.getElementById("classList");
+
+container.innerHTML = "";
+
+if(data.length === 0){
+
+container.innerHTML = "<p>No classes available.</p>";
 return;
 
 }
 
-filtered.forEach(cls => {
+data.forEach(cls => {
 
 const card = document.createElement("div");
 card.className = "class-card";
 
 card.innerHTML = `
 
-<h3>${cls.name}</h3>
+<div class="class-header">
 
-<p><b>Time:</b> ${cls.time}</p>
+<div class="class-title">
+${cls.name}
+</div>
 
-<p>${cls.description}</p>
+<div class="class-date">
+📅 ${formatDate(cls.date)} | ⏰ ${cls.time}
+</div>
 
-<p class="price">${cls.price} THB</p>
+</div>
 
-<button onclick="goBooking('${cls.classID}','${selectedDate}','${cls.time}')">
+<div class="class-detail">
+
+<p class="class-desc">
+${cls.description}
+</p>
+
+<p class="price">
+💰 ${cls.price} THB
+</p>
+
+<button onclick="book('${cls.id}','${cls.date}','${cls.time}')">
 Book Now
 </button>
 
+</div>
+
 `;
+
+card.querySelector(".class-header").onclick = () => {
+
+const detail = card.querySelector(".class-detail");
+
+detail.style.display =
+detail.style.display === "block"
+? "none"
+: "block";
+
+};
 
 container.appendChild(card);
 
 });
 
-}catch(err){
+}
 
-console.error(err);
+/* =========================
+DATE FILTER
+========================= */
 
-container.innerHTML = "Failed to load classes.";
+document.addEventListener("DOMContentLoaded", () => {
+
+loadClasses();
+
+document.getElementById("dateFilter").addEventListener("change", function(){
+
+const selectedDate = this.value;
+
+if(!selectedDate){
+
+renderClasses(classesData);
+return;
 
 }
 
-}
+const filtered = classesData.filter(cls => {
 
-function goBooking(classID,date,time){
+const d = new Date(cls.date).toISOString().split("T")[0];
 
-window.location.href =
-`booking.html?classID=${classID}&date=${date}&time=${encodeURIComponent(time)}`;
+return d === selectedDate;
+
+});
+
+renderClasses(filtered);
+
+});
+
+});
+
+/* =========================
+BOOKING
+========================= */
+
+function book(id,date,time){
+
+const name = prompt("Enter your name");
+if(!name) return;
+
+const email = prompt("Enter your email");
+if(!email) return;
+
+const phone = prompt("Enter your phone number") || "";
+
+const adult = prompt("Number of adults") || 0;
+const child = prompt("Number of children") || 0;
+
+const total = Number(adult) + Number(child);
+
+fetch(API,{
+method:"POST",
+body:JSON.stringify({
+
+classid:id,
+date:date,
+time:time,
+name:name,
+email:email,
+phone:phone,
+adult:adult,
+child:child,
+totalpax:total
+
+})
+})
+.then(res => res.text())
+.then(() => {
+
+alert("Booking submitted successfully!");
+
+})
+.catch(err => {
+
+alert("Booking failed");
+
+});
 
 }
