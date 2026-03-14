@@ -92,7 +92,10 @@ ${cls.description}
 </p>
 
 <p class="price">
-💰 ${cls.price} THB
+Join Session: ${cls.price} THB
+</p>
+<p class="price">
+Private Class:: ${cls.PrivatePrice} THB
 </p>
 
 <button onclick="book('${cls.id}','${cls.date}','${cls.time}')">
