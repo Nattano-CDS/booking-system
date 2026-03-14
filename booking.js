@@ -1,62 +1,82 @@
-const BOOKING_API =
-"https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
+const BOOKING_API ="https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
 
-document
-.getElementById("bookingForm")
-.addEventListener("submit", async function(e){
+// =============================
+// READ URL PARAMETERS
+// =============================
+
+const params = new URLSearchParams(window.location.search);
+
+document.getElementById("classid").value = params.get("classid");
+document.getElementById("classdate").value = params.get("date");
+document.getElementById("classtime").value = params.get("time");
+
+
+// =============================
+// SUBMIT BOOKING
+// =============================
+
+document.getElementById("bookingForm").addEventListener("submit", function(e){
 
 e.preventDefault();
 
-const bookingData = {
+const classid = document.getElementById("classid").value;
+const date = document.getElementById("classdate").value;
+const time = document.getElementById("classtime").value;
 
-sessionType: document.getElementById("sessionType").value,
-classID: document.getElementById("classID").value,
-date: document.getElementById("date").value,
-time: document.getElementById("time").value,
+const session = document.getElementById("session").value;
 
-adults: parseInt(document.getElementById("adults").value),
-children: parseInt(document.getElementById("children").value),
+const name = document.getElementById("name").value;
+const nationality = document.getElementById("nationality").value;
+const email = document.getElementById("email").value;
+const phone = document.getElementById("phone").value;
 
-name: document.getElementById("name").value,
-nationality: document.getElementById("nationality").value,
+const adult = Number(document.getElementById("adult").value);
+const child = Number(document.getElementById("child").value);
 
-email: document.getElementById("email").value,
-phone: document.getElementById("phone").value
+const total = adult + child;
 
-};
+if(total === 0){
 
-try{
+alert("Please enter participants");
+return;
 
-const response = await fetch(BOOKING_API, {
+}
 
+fetch(API,{
 method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
+body:JSON.stringify({
 
-body: JSON.stringify(bookingData)
+classid:classid,
+date:date,
+time:time,
 
-});
+session:session,
 
-const result = await response.json();
+name:name,
+nationality:nationality,
+email:email,
+phone:phone,
 
-if(result.status === "success"){
+adult:adult,
+child:child,
+totalpax:total
+
+})
+})
+.then(res => res.text())
+.then(() => {
 
 alert("Booking submitted successfully!");
 
-document.getElementById("bookingForm").reset();
+window.location.href="index.html";
 
-}else{
+})
+.catch(err => {
+
+console.error(err);
 
 alert("Booking failed");
 
-}
-
-}catch(error){
-
-console.error(error);
-alert("Error submitting booking");
-
-}
+});
 
 });
