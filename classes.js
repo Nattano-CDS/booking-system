@@ -4,7 +4,6 @@ const CLASS_API ="https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECw
 async function loadClasses() {
 
   const container = document.getElementById("classList");
-
   container.innerHTML = "Loading classes...";
 
   try {
@@ -14,22 +13,13 @@ async function loadClasses() {
 
     container.innerHTML = "";
 
-    if (classes.length === 0) {
-      container.innerHTML = "<p>No classes available.</p>";
-      return;
-    }
-
     classes.forEach(cls => {
-
-      const date = new Date(cls.date).toLocaleDateString("en-GB");
 
       const card = document.createElement("div");
       card.className = "class-card";
 
       card.innerHTML = `
         <h3>${cls.name}</h3>
-
-        <p><b>Date:</b> ${date}</p>
 
         <p><b>Time:</b> ${cls.time}</p>
 
@@ -49,7 +39,6 @@ async function loadClasses() {
   } catch (error) {
 
     console.error(error);
-
     container.innerHTML = "Failed to load classes.";
 
   }
