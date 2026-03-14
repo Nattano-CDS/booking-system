@@ -1,310 +1,118 @@
-/* =========================
-GLOBAL
-========================= */
-
 body{
-font-family: 'Segoe UI', Arial, sans-serif;
-background:#f5f6f8;
+font-family:Arial, Helvetica, sans-serif;
 margin:0;
-padding:40px;
+background:#f4f4f4;
+color:#333;
 }
+
+/* Header */
+
+header{
+background:#000;
+color:white;
+text-align:center;
+padding:40px 20px;
+}
+
+header h1{
+margin:0;
+font-size:32px;
+}
+
+header p{
+margin-top:10px;
+opacity:0.8;
+}
+
+/* Container */
 
 .container{
-max-width:900px;
+max-width:1100px;
 margin:auto;
+padding:40px 20px;
 }
 
-h1{
-font-size:34px;
-margin-bottom:25px;
-font-weight:600;
+/* Class grid */
+
+#classList{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
 }
 
-/* =========================
-DATE FILTER
-========================= */
-
-.filter{
-margin-bottom:25px;
-display:flex;
-gap:10px;
-align-items:center;
-}
-
-.filter input{
-padding:10px 12px;
-border-radius:8px;
-border:1px solid #ddd;
-font-size:14px;
-}
-
-/* =========================
-CLASS LIST
-========================= */
-
-.class-list{
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-/* =========================
-CLASS CARD
-========================= */
+/* Class card */
 
 .class-card{
-
 background:white;
-border-radius:16px;
-padding:24px;
-
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-
-transition:all .25s ease;
-
+border-radius:10px;
+padding:20px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
+transition:0.2s;
 }
 
 .class-card:hover{
-
 transform:translateY(-4px);
-box-shadow:0 15px 35px rgba(0,0,0,0.12);
-
 }
 
-/* =========================
-HEADER
-========================= */
+/* Title */
 
-.class-header{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-cursor:pointer;
-
+.class-card h3{
+margin-top:0;
+font-size:22px;
 }
 
-.class-title{
-
-font-size:20px;
-font-weight:600;
-
-}
-
-.class-date{
-
-font-size:14px;
-color:#666;
-
-}
-
-/* =========================
-DETAIL
-========================= */
-
-.class-detail{
-
-display:none;
-margin-top:18px;
-
-border-top:1px solid #eee;
-padding-top:18px;
-
-}
-
-.class-desc{
-
-color:#555;
-margin-bottom:10px;
-line-height:1.5;
-
-}
+/* Price */
 
 .price{
-
-font-weight:600;
-margin-bottom:10px;
-
+font-weight:bold;
+font-size:18px;
+margin-top:10px;
 }
 
-/* =========================
-BUTTON
-========================= */
+/* Button */
 
 button{
-
-background:#111;
-color:white;
-
-border:none;
-
-padding:12px 22px;
-
-border-radius:8px;
-
-cursor:pointer;
-
 margin-top:15px;
-
-transition:all .2s;
-
+padding:10px 16px;
+border:none;
+background:black;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-size:15px;
 }
 
 button:hover{
-
 background:#333;
-
 }
 
-/* =========================
-LOADING
-========================= */
+/* Booking form */
 
-.loading{
-
-color:#777;
-
-}
-
-/* =========================
-BOOKING PAGE
-========================= */
-
-.booking-wrapper{
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-padding:40px 20px;
-
-}
-
-.booking-card{
-
-width:100%;
-max-width:600px;
-
+form{
 background:white;
-
-padding:35px;
-
-border-radius:16px;
-
-box-shadow:0 20px 45px rgba(0,0,0,0.08);
-
-}
-
-.booking-card h1{
-
-margin-bottom:25px;
-font-size:28px;
-
-}
-
-/* =========================
-FORM GRID
-========================= */
-
-.form-grid{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:16px;
-
-margin-top:15px;
-
-}
-
-.form-group{
-
-display:flex;
-flex-direction:column;
-
+padding:30px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
 label{
-
-font-size:14px;
-margin-bottom:5px;
-color:#444;
-
+display:block;
+margin-top:15px;
+font-weight:bold;
 }
 
-input, select{
-
-padding:11px 12px;
-
-border-radius:8px;
-
-border:1px solid #ddd;
-
-font-size:14px;
-
-}
-
-input:focus, select:focus{
-
-outline:none;
-border-color:#111;
-
-}
-
-/* =========================
-BOOKING BUTTON
-========================= */
-
-.submit-btn{
-
-margin-top:25px;
-
+input,select{
 width:100%;
-
-background:#111;
-
-color:white;
-
-border:none;
-
-padding:14px;
-
-border-radius:10px;
-
-font-size:16px;
-
-cursor:pointer;
-
-transition:all .2s;
-
+padding:10px;
+margin-top:5px;
+border:1px solid #ddd;
+border-radius:6px;
 }
 
-.submit-btn:hover{
+/* Back link */
 
-background:#333;
-
-}
-
-/* =========================
-MOBILE
-========================= */
-
-@media(max-width:600px){
-
-body{
-padding:20px;
-}
-
-.class-header{
-flex-direction:column;
-align-items:flex-start;
-gap:6px;
-}
-
-.form-grid{
-grid-template-columns:1fr;
-}
-
+.back-link{
+margin-top:20px;
+display:block;
+text-align:center;
 }
