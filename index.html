@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -7,93 +8,7 @@
 
 <title>Cooking Class Booking</title>
 
-<style>
-
-body{
-font-family: Arial, Helvetica, sans-serif;
-margin:0;
-background:#f4f4f4;
-color:#333;
-}
-
-.container{
-max-width:1000px;
-margin:auto;
-padding:30px 20px;
-}
-
-h1{
-text-align:center;
-margin-bottom:30px;
-}
-
-.filter-box{
-text-align:center;
-margin-bottom:30px;
-}
-
-input[type="date"]{
-padding:10px;
-font-size:16px;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-.class-list{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-}
-
-@media(max-width:700px){
-.class-list{
-grid-template-columns:1fr;
-}
-}
-
-.class-card{
-
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
-transition:0.2s;
-
-}
-
-.class-card:hover{
-transform:translateY(-3px);
-}
-
-.class-title{
-font-size:20px;
-font-weight:bold;
-margin-bottom:10px;
-}
-
-.class-info{
-color:#666;
-margin-bottom:15px;
-}
-
-.view-btn{
-
-display:inline-block;
-background:#000;
-color:white;
-padding:10px 18px;
-border-radius:6px;
-text-decoration:none;
-
-}
-
-.empty{
-text-align:center;
-padding:40px;
-color:#888;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -101,119 +16,28 @@ color:#888;
 
 <div class="container">
 
-<h1>Cooking Classes</h1>
+<h1>Available Classes</h1>
 
-<div class="filter-box">
-Select Date<br><br>
+<div class="filter">
+
+<label>Select Date</label>
+
 <input type="date" id="dateFilter">
-</div>
-
-<div id="classList" class="class-list"></div>
 
 </div>
 
-<script>
+<div id="classList" class="class-list">
 
-const apiURL = "https://script.google.com/macros/s/AKfycbzkoUpLUDR03lJnx6Bxunnd3AFJP7CXLpHtiYnA763w1mS019JZE_yutidiISJpSEdp/exec";
-
-let classes = [];
-
-async function loadClasses(){
-
-try{
-
-const res = await fetch(apiURL);
-classes = await res.json();
-
-renderClasses(classes);
-
-}catch(err){
-
-console.error(err);
-
-document.getElementById("classList").innerHTML =
-"<div class='empty'>Unable to load classes</div>";
-
-}
-
-}
-
-function renderClasses(list){
-
-const container = document.getElementById("classList");
-
-container.innerHTML = "";
-
-if(list.length === 0){
-
-container.innerHTML =
-"<div class='empty'>No classes available</div>";
-
-return;
-
-}
-
-list.forEach(cls => {
-
-const date = new Date(cls.date).toLocaleDateString();
-
-container.innerHTML += `
-
-<div class="class-card">
-
-<div class="class-title">
-${cls.name}
+<div class="loading">
+Loading classes...
 </div>
-
-<div class="class-info">
-
-📅 ${date}<br>
-🕒 ${cls.time}<br>
-Seats Available: ${cls.maxPax}
 
 </div>
 
-<a class="view-btn" href="class.html?classID=${cls.classID}">
-View Class
-</a>
-
 </div>
 
-`;
-
-});
-
-}
-
-document
-.getElementById("dateFilter")
-.addEventListener("change", function(){
-
-const selectedDate = this.value;
-
-if(!selectedDate){
-
-renderClasses(classes);
-return;
-
-}
-
-const filtered = classes.filter(c => {
-
-const classDate =
-new Date(c.date).toISOString().split("T")[0];
-
-return classDate === selectedDate;
-
-});
-
-renderClasses(filtered);
-
-});
-
-loadClasses();
-
-</script>
+<script src="script.js"></script>
 
 </body>
+
 </html>
