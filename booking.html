@@ -16,39 +16,82 @@
 background:white;
 padding:40px;
 border-radius:16px;
-max-width:700px;
+max-width:750px;
 margin:auto;
 box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
+.class-card{
+
+background:#f7f7f7;
+border-radius:12px;
+padding:20px;
+margin-bottom:25px;
+
+}
+
+.class-name{
+
+font-size:22px;
+font-weight:600;
+margin-bottom:5px;
+
+}
+
+.class-desc{
+
+color:#666;
+margin-bottom:10px;
+
+}
+
+.class-info{
+
+font-size:14px;
+color:#444;
+margin-bottom:10px;
+
+}
+
+.price-box{
+
+display:flex;
+gap:20px;
+margin-top:10px;
+
+}
+
+.price{
+
+background:white;
+padding:10px 15px;
+border-radius:8px;
+border:1px solid #eee;
+font-weight:600;
+
+}
+
 .form-grid{
+
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:15px;
-margin-top:20px;
+
 }
 
 .form-group{
+
 display:flex;
 flex-direction:column;
+
 }
 
 input,select{
+
 padding:12px;
 border-radius:8px;
 border:1px solid #ddd;
-font-size:14px;
-}
 
-.full{
-grid-column:1 / -1;
-}
-
-.class-summary{
-background:#f7f7f7;
-padding:15px;
-border-radius:10px;
-margin-top:10px;
 }
 
 .submit-btn{
@@ -72,7 +115,9 @@ cursor:pointer;
 }
 
 .submit-btn:hover{
+
 background:#333;
+
 }
 
 </style>
@@ -87,12 +132,30 @@ background:#333;
 
 <h1>Book Your Class</h1>
 
-<!-- CLASS INFO -->
-<div class="class-summary">
+<!-- CLASS INFO CARD -->
 
-<div><strong>Class:</strong> <span id="className"></span></div>
-<div><strong>Date:</strong> <span id="classDate"></span></div>
-<div><strong>Time:</strong> <span id="classTime"></span></div>
+<div class="class-card">
+
+<div class="class-name" id="className"></div>
+
+<div class="class-desc" id="classDesc"></div>
+
+<div class="class-info">
+📅 <span id="classDate"></span>  
+⏰ <span id="classTime"></span>
+</div>
+
+<div class="price-box">
+
+<div class="price">
+Join Session: <span id="joinPrice"></span> THB
+</div>
+
+<div class="price">
+Private Class: <span id="privatePrice"></span> THB
+</div>
+
+</div>
 
 </div>
 
@@ -115,48 +178,38 @@ background:#333;
 
 </div>
 
+<br>
+
 <div class="form-grid">
 
 <div class="form-group">
-
 <label>Name</label>
 <input type="text" id="name" required>
-
 </div>
 
 <div class="form-group">
-
 <label>Nationality</label>
 <input type="text" id="nationality">
-
 </div>
 
 <div class="form-group">
-
 <label>Email</label>
 <input type="email" id="email" required>
-
 </div>
 
 <div class="form-group">
-
 <label>Phone</label>
 <input type="text" id="phone">
-
 </div>
 
 <div class="form-group">
-
 <label>Adults</label>
 <input type="number" id="adult" value="1">
-
 </div>
 
 <div class="form-group">
-
 <label>Children</label>
 <input type="number" id="child" value="0">
-
 </div>
 
 </div>
