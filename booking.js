@@ -1,4 +1,5 @@
-const BOOKING_API ="https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
+const API ="https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
+
 
 // =============================
 // READ URL PARAMETERS
@@ -6,9 +7,23 @@ const BOOKING_API ="https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpE
 
 const params = new URLSearchParams(window.location.search);
 
-document.getElementById("classid").value = params.get("classid");
-document.getElementById("classdate").value = params.get("date");
-document.getElementById("classtime").value = params.get("time");
+const classid = params.get("classid");
+const date = params.get("date");
+const time = params.get("time");
+const name = params.get("name") || "Thai Cooking Class";
+
+document.getElementById("classid").value = classid;
+document.getElementById("classdate").value = date;
+document.getElementById("classtime").value = time;
+
+
+// =============================
+// DISPLAY CLASS INFO
+// =============================
+
+document.getElementById("className").innerText = name;
+document.getElementById("classDate").innerText = new Date(date).toLocaleDateString("en-GB");
+document.getElementById("classTime").innerText = time;
 
 
 // =============================
@@ -18,10 +33,6 @@ document.getElementById("classtime").value = params.get("time");
 document.getElementById("bookingForm").addEventListener("submit", function(e){
 
 e.preventDefault();
-
-const classid = document.getElementById("classid").value;
-const date = document.getElementById("classdate").value;
-const time = document.getElementById("classtime").value;
 
 const session = document.getElementById("session").value;
 
