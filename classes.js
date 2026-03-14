@@ -1,4 +1,4 @@
-const CLASS_API = "YOUR_CLASS_API_URL";
+const CLASS_API = "https://script.google.com/macros/s/AKfycbxxPZYwtkv12nWdzELpECwXe8NJALhfBi8wop2Ax48fvf8QKEXPgesblNEHK_wBBHaO/exec";
 
 const datePicker = document.getElementById("classDate");
 
