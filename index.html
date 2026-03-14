@@ -1,39 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooking Class Booking</title>
 
-<title>Thai Cooking Classes</title>
+<style>
 
-<link rel="stylesheet" href="style.css">
+body{
+font-family: Arial;
+background:#f7f7f7;
+margin:0;
+padding:40px;
+}
 
+.container{
+max-width:900px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+margin-bottom:30px;
+}
+
+.filter{
+margin-bottom:30px;
+text-align:center;
+}
+
+input[type="date"]{
+padding:10px;
+font-size:16px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.class-list{
+display:grid;
+grid-template-columns:1fr;
+gap:20px;
+}
+
+.class-card{
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.class-title{
+font-size:20px;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.class-info{
+color:#666;
+margin-bottom:10px;
+}
+
+.btn{
+display:inline-block;
+padding:10px 18px;
+background:black;
+color:white;
+border-radius:6px;
+text-decoration:none;
+}
+
+</style>
 </head>
 
 <body>
 
-<header class="header">
-<h1>Thai Cooking Classes</h1>
-<p>Select a date to see available classes</p>
-</header>
-
 <div class="container">
 
-<label>Select Date</label>
+<h1>Cooking Classes</h1>
 
-<input type="date" id="classDate">
-
+<div class="filter">
+Filter by Date  
 <br><br>
-
-<div id="classList">
-Please select a date
+<input type="date" id="dateFilter">
 </div>
 
+<div id="classList" class="class-list"></div>
+
 </div>
 
-<script src="classes.js"></script>
+<script src="getClasses.js"></script>
 
 </body>
 </html>
